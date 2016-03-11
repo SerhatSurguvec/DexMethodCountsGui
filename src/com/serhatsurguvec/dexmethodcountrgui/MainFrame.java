@@ -9,20 +9,18 @@ import java.io.File;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
 
 import info.persistent.dex.Main;
 
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.ScrollPaneConstants;
-
+@SuppressWarnings("serial")
 public class MainFrame extends JFrame {
 
 	private JPanel contentPane;
@@ -100,21 +98,19 @@ public class MainFrame extends JFrame {
 				
 				String pathToApk = txtBrowseApk.getText();
 				if(!isFileAvailable(pathToApk)){
-					//Start Count
-					Main main = new Main();
-			        String str = main.run(new String[]{pathToApk});
-			        label.setText(str);
+					
+					handleApkFile(pathToApk);
+		
+			        
 				}else{
 					
 					JOptionPane.showMessageDialog(MainFrame.this,
 						    "File related error occured",
 						    "Error",
 						    JOptionPane.ERROR_MESSAGE);
-					
-				}
-		        
+				
+				}   
 			}
-		
 		});
 		
 		btnStart.setBounds(477, 44, 117, 29);
@@ -143,18 +139,26 @@ public class MainFrame extends JFrame {
 	        @Override
 	        public boolean accept(File f) {
 	            // TODO Auto-generated method stub
-	            return f.getName().endsWith(".dex");
+	            return f.getName().endsWith(".apk");
 	        }
 
 	        @Override
 	        public String getDescription() {
-	            return "Dex Files";
+	            return "Apk Files";
 	        }
 
 	    });
 		
 		
 	}
+	
+	private void handleApkFile(String pathToApk) {
+		// TODO Auto-generated method stub
+		Main main = new Main();
+	    String str = main.run(new String[]{pathToApk});
+	    label.setText(str);
+	}
+	
 	
 	@SuppressWarnings("finally")
 	private boolean isFileAvailable( String pathToApk) {
@@ -163,7 +167,7 @@ public class MainFrame extends JFrame {
 			if(!pathToApk.equals("")){
 				File file = new File(pathToApk);
 				if(file.exists()){
-					if(file.getName().endsWith(".dex")){
+					if(file.getName().endsWith(".apk")){
 						return true;
 					}
 				}
